@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recetas</title>
+
+  <!-- Estilos para evitar advertencia de text-size-adjust -->
+  <style>
+    html {
+      -webkit-text-size-adjust: 100% !important;
+      text-size-adjust: 100% !important;
+    }
+  </style>
+
+  <!-- Scripts -->
+  <script defer src="app.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- PWA - Manifest, Iconos y colores -->
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <!-- Color de la barra del navegador para diferentes modos -->
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ffffff">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141414">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+  <nav class="bg-white shadow p-4 flex justify-between">
+    <h1 class="text-xl font-bold">Mi Recetario</h1>
+    <div class="flex gap-4">
+      <button onclick="mostrar('inicio')" class="hover:underline">Inicio</button>
+      <button onclick="mostrar('crear')" class="hover:underline">Agregar Receta</button>
+    </div>
+  </nav>
+
+  <main class="p-4">
+    <!-- Sección Inicio -->
+    <section id="inicio">
+      <input type="text" id="buscar" placeholder="Buscar receta..." class="mb-4 p-2 border w-full rounded" />
+      <div id="sin-recetas" class="text-center text-gray-500 hidden">No hay recetas aún.</div>
+      <div id="lista-recetas" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <!-- Sección Crear -->
+    <section id="crear" class="hidden max-w-xl mx-auto">
+      <h2 class="text-xl font-bold mb-4">Nueva Receta</h2>
+      <div class="space-y-4">
+        <input id="nombre" placeholder="Nombre de la receta" class="w-full p-2 border rounded" />
+        <textarea id="descripcion" placeholder="Descripción" class="w-full p-2 border rounded"></textarea>
+        <textarea id="ingredientes" placeholder="Ingredientes (uno por línea)" class="w-full p-2 border rounded"></textarea>
+        <textarea id="pasos" placeholder="Pasos para preparar" class="w-full p-2 border rounded"></textarea>
+        <input id="costo" type="number" placeholder="Costo" class="w-full p-2 border rounded" />
+        <button onclick="guardarReceta()" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Guardar Receta</button>
+        <div id="mensaje-exito" class="text-green-600 hidden">Receta guardada con éxito.</div>
+      </div>
+    </section>
+
+    <!-- Sección Ver -->
+    <section id="ver" class="hidden max-w-2xl mx-auto">
+      <h2 id="ver-nombre" class="text-2xl font-bold mb-2"></h2>
+      <p id="ver-descripcion" class="mb-4"></p>
+      <h3 class="font-semibold">Ingredientes:</h3>
+      <ul id="ver-ingredientes" class="list-disc list-inside mb-4"></ul>
+      <h3 class="font-semibold">Pasos:</h3>
+      <p id="ver-pasos" class="mb-4"></p>
+      <p><strong>Costo:</strong> $<span id="ver-costo"></span></p>
+      <p><strong>Precio sugerido:</strong> $<span id="ver-precio"></span></p>
+    </section>
+  </main>
+</body>
+</html>
